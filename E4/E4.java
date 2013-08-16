@@ -3,8 +3,9 @@
  * @author Drew Ingram
  * 
  *	This is a challenge to return the largest palindrome which is a multiple of
- *	two three-digit numbers.  This is the first challenge I am not doing in Scheme, but
- *	I am still in the Scheme mindset, which is why there are so many functions.
+ *	two three-digit numbers.  I initially started doing this problem in Scheme, but I decided
+ *	to switch to Java because storing the digits in an array makes it far easier to compare
+ *	its digits.
  */
 import java.util.ArrayList;
 public class E4 {
@@ -17,12 +18,6 @@ public class E4 {
 		n = largestMultiple(n);
 		
 		E4Number num = new E4Number(n);
-		//System.out.println(hasNDigitFactors(3, 10000));
-		//System.out.println("SameNumber? " + sameNumberOfDigits(20, 1));
-		
-		//System.err.println((new E4Number(899998)).isPalindrome());
-		//(new E4Number(998001)).nextPalindrome();
-		
 		
 		while(true){
 			System.out.println(num.getNum());
@@ -39,21 +34,13 @@ public class E4 {
 	}
 	
 	
-	/**
-	 * Return the largest multiple of any n digits
-	 * @return the largst multiple
-	 * @param n the number of digits
-	 */
+	//Return the largest multiple of any two n-digit numbers
 	public static int largestMultiple(int n){
 		int num = makeNines(n);
 		return num*num;
 	}
 	
-	/**
-	 * Create a number that is n nines
-	 * @param n the number of digits
-	 * @return a number containing n nines
-	 */
+	//Make an n-digit number of all nines
 	public static int makeNines(int n){
 		int ret = 0;
 		for(int i = 0; i < n; i ++){
@@ -70,9 +57,7 @@ public class E4 {
 		
 		while(i <= Math.sqrt(num)){
 			if(num % i == 0){//If i evenly divides num
-			//	System.out.println("Checking " + i + " and " + num/i);
 				if(sameNumberOfDigits(i, num/i)){
-			//		System.err.println("TRUE FOR " + i + " AND " + num/i);
 					ret = true;
 					break;
 				}
@@ -82,7 +67,7 @@ public class E4 {
 		return ret;
 	}
 
-	
+	//Check to see if a and b have the same number of digits
 	public static boolean sameNumberOfDigits(int a, int b){
 		boolean ret = true;
 		while(a/10 != 0){//While there is still some left of a
@@ -99,6 +84,7 @@ public class E4 {
 		return ret;
 	}
 	
+	//Used for debugging.  Prints out the factors of a number n
 	public static void factor(int n){
 		for(int i = 1; i < (int)Math.sqrt(n); i ++){
 			if(n % i == 0){

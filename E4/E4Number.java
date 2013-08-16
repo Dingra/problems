@@ -15,7 +15,6 @@ public class E4Number {
 		boolean ret = true;
 		
 		while(pos > length - 1 - pos){
-			//System.out.println("Working...");
 			if(number[pos] != number[length - 1 - pos]){
 				ret = false;
 				break;
@@ -25,6 +24,9 @@ public class E4Number {
 		return ret;
 	}
 	
+	
+	//Change the number to the palindrome that is less than the number and closest to
+	//the number
 	public void nextPalindrome(){
 		
 		//Must first check to see if it is another palindrome.  If it is, subtract 1 from it.
@@ -37,8 +39,6 @@ public class E4Number {
 		int pos = length - 1;
 		int temp;
 		
-		System.out.println("\nCurrent Palindrome: " + getNum());
-		
 		while(pos > length - 1 - pos){
 			int first = number[pos];
 			int last = number[length - 1 - pos];
@@ -46,13 +46,9 @@ public class E4Number {
 			//at pos and length-pos equal
 			if(last < first){
 				temp = last + 10 - first;
-				System.out.println("Subtracting " + first + " from " + (last + 10) + " to get " + temp);
 			}
 			else
 				temp = number[pos] - number[length - 1 - pos];
-			System.out.print("Num is: " + getNum() + " and ");
-			System.out.println("Temp is: " + temp);
-			System.out.println("Should be " + (10 - Math.abs(temp)) + "?");
 			num -= Math.abs(temp) * Math.pow(10, length - 1 - pos);
 			makeNumber(num);
 			
@@ -62,11 +58,8 @@ public class E4Number {
 		//It is possible that matching two digits will change a digit that has already been
 		//checked.  Must check here to see if the number is actually a palindrome
 		if(!isPalindrome()){//If this number is not a palindrome
-			System.err.println("Try again...");
 			nextPalindrome();//Search for the next palindrome
 		}
-		else
-			System.out.println(getNum());
 			
 	}
 	
