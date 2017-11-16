@@ -2,12 +2,12 @@
  * The objective here is to take a bunch of pre-set integers placed in a trianglular formation and find the minimum sub
  * triangle for the whole thing. 
  * 
- * My solution works by looking at all negative numbers individually. For each one, it expands the triangle to the right
- * by adding all adjacent numbers in the right diagonal, checking the sum then continuing to expand until it's out of
- * diagonals to add.
+ * My solution works by looking at all negative numbers individually. For each one, it expands the triangle downward
+ * by adding all adjacent numbers in the row below the current one, checking the sum along the way. This process is repeated until
+ * there are no more nodes to add. To avoid redundancy, it also stops once it's computed a triangle for whom the leftmost node
+ * is negative (since the same process will be done on this node eventually)
  * 
- * Next it takes the expanded triangle and expands it down in a similar way. To avoid redundancy, if the left most point of the
- * next triangle is negative, the algorithm will stop and go to the next triangle.
+ * Next it takes the expanded triangle and expands it right in a similar way.
  * 
  * Since each expansion increases the number of nods that need to be added to the sum, this can be quite time consuming as each
  * node in each line has to be added to the sum and a line can have up to 1000 numbers in it. To combat this, each node
@@ -78,35 +78,14 @@ public class NumberTriangle {
 			
 			sum += currentValue;
 			
-			//Keep expanding the current triangle to the right by adding the diagonal until a wall is hit
+			//With the triangle expanded as far right as possible, now expand it down until we hit the bottom or a negative number
 			boolean breakCond = false;
 			while(!breakCond) {
-				if(cX >= cY) {
-					breakCond = true;
-				} else {
-					sum += expandRight(aX, aY, cX, cY);
-					
-					if(sum < min) {
-						min = sum;
-					}
-					
-					//The coordinates for the top and rightmost nodes in the next triangle
-					aX ++;
-					aY --;
-					cX ++;
-					
-					get(aX, aY);
-				}
-			}
-			
-			//With the triangle expanded as far right as possible, now expand it down until we hit the bottom or a negative number
-			breakCond = false;
-			while(!breakCond) {
 				if(bY >= numberOfRows - 1) {
-					break;
+					breakCond = true;
 				}
-				NumberNode nextB = get(bX, bY + 1);
-				if(nextB.getValue() < 0) {
+				NumberNode currentB = get(bX, bY);
+				if(currentB.getValue() < 0) {
 					//If the left most value in a triangle is negative, the one we're about
 					//to check will actually be checked later when we examine that node, so don't bother here
 					breakCond = true;
@@ -121,6 +100,27 @@ public class NumberTriangle {
 					bY ++;
 					cX ++;
 					cY ++;
+					
+					get(aX, aY);
+				}
+			}
+			
+			//Keep expanding the current triangle to the right by adding the diagonal until a wall is hit
+			breakCond = false;
+			while(!breakCond) {
+				if(cX >= cY) {
+					breakCond = true;
+				} else {
+					sum += expandRight(aX, aY, cX, cY);
+					
+					if(sum < min) {
+						min = sum;
+					}
+					
+					//The coordinates for the top and rightmost nodes in the next triangle
+					aX ++;
+					aY --;
+					cX ++;
 					
 					get(aX, aY);
 				}
